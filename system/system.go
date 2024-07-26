@@ -53,6 +53,7 @@ func (system ParkingLotSystem) renderMenu() {
 	list := []string{
 		"add_slot        To add n slot to existing system usage: `add_slot 6` .",
 		"status          To get nearest slot.",
+		"park            Tp park vehicle to the nearest slot. usage: `park KA-01-BB-0001 Black` .",
 		"exit            To close the system.",
 	}
 	for idx, item := range list {
@@ -65,6 +66,8 @@ func (system ParkingLotSystem) getCommand(str string, opts []string) (command, e
 		return newAddSlotCommand(system.state, opts)
 	} else if str == "status" {
 		return newStatusCommand(system.state)
+	} else if str == "park" {
+		return newParkCommand(system.state, opts)
 	} else if str == "exit" {
 		return newExitCommand()
 	}
