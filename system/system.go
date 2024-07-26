@@ -8,6 +8,15 @@ import (
 	"strings"
 )
 
+type Command string
+
+const (
+	AddSlotCommand Command = "add_slot"
+	ExitCommand    Command = "exit"
+	ParkCommand    Command = "park"
+	StatusCommand  Command = "status"
+)
+
 type ParkingLotSystem struct {
 	reader *bufio.Reader
 	state  *state
@@ -51,10 +60,10 @@ func (system ParkingLotSystem) renderMenu() {
 	fmt.Print("\n=====================================================================================================\n\n")
 	fmt.Print("Options:- \n\n")
 	list := []string{
-		"add_slot        To add n slot to existing system.        usage: `add_slot 6`",
-		"status          To get nearest slot.                     usage: `status`",
-		"park            Tp park vehicle to the nearest slot.     usage: `park KA-01-BB-0001 Black`",
-		"exit            To close the system.                     usage: `exit`",
+		fmt.Sprintf("%s        To add n slot to existing system.        usage: `%s 6`", AddSlotCommand, AddSlotCommand),
+		fmt.Sprintf("%s          To get nearest slot.                     usage: `%s`", StatusCommand, StatusCommand),
+		fmt.Sprintf("%s            Tp park vehicle to the nearest slot.     usage: `%s KA-01-BB-0001 Black`", ParkCommand, ParkCommand),
+		fmt.Sprintf("%s            To close the system.                     usage: `%s`", ExitCommand, ExitCommand),
 	}
 	for idx, item := range list {
 		fmt.Println(fmt.Sprintf("%d", idx+1) + ". " + item)
@@ -62,13 +71,13 @@ func (system ParkingLotSystem) renderMenu() {
 }
 
 func (system ParkingLotSystem) getCommand(str string, opts []string) (command, error) {
-	if str == "add_slot" {
+	if str == string(AddSlotCommand) {
 		return newAddSlotCommand(system.state, opts)
-	} else if str == "status" {
+	} else if str == string(StatusCommand) {
 		return newStatusCommand(system.state)
-	} else if str == "park" {
+	} else if str == string(ParkCommand) {
 		return newParkCommand(system.state, opts)
-	} else if str == "exit" {
+	} else if str == string(ExitCommand) {
 		return newExitCommand()
 	}
 	return nil, errors.New("command doesn't exist")
