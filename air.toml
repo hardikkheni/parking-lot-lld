@@ -1,0 +1,5 @@
+[build]
+skip_build = false
+
+[cmd]
+command = "go run main.go"
