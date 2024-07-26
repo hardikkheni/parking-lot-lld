@@ -51,10 +51,10 @@ func (system ParkingLotSystem) renderMenu() {
 	fmt.Print("\n=====================================================================================================\n\n")
 	fmt.Print("Options:- \n\n")
 	list := []string{
-		"add_slot        To add n slot to existing system usage: `add_slot 6` .",
-		"status          To get nearest slot.",
-		"park            Tp park vehicle to the nearest slot. usage: `park KA-01-BB-0001 Black` .",
-		"exit            To close the system.",
+		"add_slot        To add n slot to existing system.        usage: `add_slot 6`",
+		"status          To get nearest slot.                     usage: `status`",
+		"park            Tp park vehicle to the nearest slot.     usage: `park KA-01-BB-0001 Black`",
+		"exit            To close the system.                     usage: `exit`",
 	}
 	for idx, item := range list {
 		fmt.Println(fmt.Sprintf("%d", idx+1) + ". " + item)
