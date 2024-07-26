@@ -1,6 +1,8 @@
 package system
 
-import "errors"
+import (
+	"errors"
+)
 
 type Slot struct {
 	plateNumber string
@@ -22,13 +24,22 @@ func (st *state) addSlot(n int) {
 	}
 }
 
-func (st *state) findNearestSlot() (int, error) {
+func (st *state) findNearestSlot() (int, *Slot, error) {
 	for idx, slot := range st.slots {
 		if !slot.parked {
-			return idx + 1, nil
+			return idx + 1, slot, nil
 		}
 	}
-	return -1, errors.New("haven't created slots yet")
+	return -1, nil, errors.New("haven't created slots yet")
+}
+
+func (st *state) parkAtNearestEmptySlot(platNumber string, color string) (int, error) {
+	nth, slot, err := st.findNearestSlot()
+	if err != nil {
+		return -1, err
+	}
+	slot.park(platNumber, color)
+	return nth, nil
 }
 
 func newSlot() *Slot {

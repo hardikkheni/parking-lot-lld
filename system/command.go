@@ -47,7 +47,7 @@ type statusCommand struct {
 }
 
 func (c *statusCommand) execute() (string, error, bool) {
-	nth, err := c.state.findNearestSlot()
+	nth, _, err := c.state.findNearestSlot()
 	if err != nil {
 		return "", err, false
 	}
@@ -56,4 +56,22 @@ func (c *statusCommand) execute() (string, error, bool) {
 
 func newStatusCommand(st *state) (*statusCommand, error) {
 	return &statusCommand{state: st}, nil
+}
+
+type parkCommand struct {
+	state       *state
+	plateNumber string
+	color       string
+}
+
+func (c *parkCommand) execute() (string, error, bool) {
+	nth, err := c.state.parkAtNearestEmptySlot(c.plateNumber, c.color)
+	if err != nil {
+		return "", err, false
+	}
+	return fmt.Sprintf("The plate: %s is parked at %d", c.plateNumber, nth), nil, false
+}
+
+func newParkCommand(st *state, opts []string) (*parkCommand, error) {
+	return &parkCommand{state: st, plateNumber: opts[0], color: opts[1]}, nil
 }
